@@ -27,7 +27,10 @@ jobs:
           path: .
       - run: chmod +x ci/build-app.sh
       - run: ci/build-app.sh
-      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: code
+          path: .
       
 
   test-job: 
@@ -41,11 +44,14 @@ jobs:
           path: .
       - run: chmod +x ci/unit-test-app.sh
       - run: ci/unit-test-app.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: code
+          path: .
     
   docker-image-job:
     needs: [test-job,  build-job]
     runs-on: ubuntu-latest
-    container: gradle:6-jdk11
     steps:
       - name: Login to docker
         uses: docker/login-action@v1
@@ -54,7 +60,7 @@ jobs:
           password: ${{ env.docker_password }}
       - name: build and push
         uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: simonnj/my-image:latest
+      - run: export GIT_COMMIT="GA-$GITHUB_SHA" && ci/build-docker.sh
+      - run: export GIT_COMMIT="GA-$GITHUB_SHA" && ci/push-docker.sh
+
 
