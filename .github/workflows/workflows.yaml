@@ -12,6 +12,7 @@ jobs:
           path: .
 
   build-job:
+    needs: clone-down-job
     runs-on: ubuntu-latest
     container: gradle:6-jdk11
     steps:
@@ -19,14 +20,22 @@ jobs:
         uses: actions/checkout@v2
       - run: chmod +x ci/build-app.sh
       - run: ci/build-app.sh
-      needs: clone-down-job
+      - uses: actions/download-artifact@v2
+        with:
+          name: code
+          path: .
+      
 
   test-job: 
+    needs: clone-down-job
     runs-on: ubuntu-latest
     container: gradle:6-jdk11
     steps:
       - name: Test
         run: chmod +x ci/unit-test-app.sh
       - run: ci/unit-test-app.sh
-      needs: clone-down-job
+      - uses: actions/download-artifact@v2
+        with:
+          name: code
+          path: .
   
