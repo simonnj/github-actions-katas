@@ -14,7 +14,6 @@ jobs:
     container: gradle:6-jdk11
     steps:
       - name: Test
-        uses: actions/checkout@v2
         run: chmod +x ci/unit-test-app.sh
       - run: ci/unit-test-app.sh
   clone-down-job: 
