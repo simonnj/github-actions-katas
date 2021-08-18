@@ -5,11 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     container: gradle:6-jdk11
     steps:
-      - name: Upload a Build Artifact
+      - name: Clone-down
         uses: actions/upload-artifact@v2
         with:
           name: code
           path: .
+
   build-job:
     runs-on: ubuntu-latest
     container: gradle:6-jdk11
@@ -19,6 +20,7 @@ jobs:
       - run: chmod +x ci/build-app.sh
       - run: ci/build-app.sh
       needs: clone-down-job
+
   test-job: 
     runs-on: ubuntu-latest
     container: gradle:6-jdk11
