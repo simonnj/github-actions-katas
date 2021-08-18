@@ -10,7 +10,7 @@ jobs:
       - run: chmod +x ci/build-app.sh
       - run: ci/build-app.sh
       - name: Test
-        run: chmod +x ci/unit-text-app.sh
+        run: chmod +x ci/unit-test-app.sh
       - run: ci/unit-test-app.sh
 
 
